@@ -7,7 +7,7 @@ WORKDIR /app
 
 # 将构建好的jar文件复制到容器中
 #COPY blog-web/target/blog-web.jar app.jar
-COPY blog-web/target/blog-web.jar app.jar
+COPY blog-web.jar app.jar
 
 # 暴露应用端口
 EXPOSE 8080
