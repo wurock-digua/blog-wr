@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wurock.blog.article.mapper.ArticleMapper">
+
+<!--    获取文章列表（条件查询）-->
+<!--    List<Article> getArticleListByCondition(Long categoryId, String state);-->
+    <select id="getArticleListByCondition" resultType="cn.wurock.blog.article.entity.Article">
+        SELECT * FROM article
+        <where>
+            <if test="categoryId != null">
+                AND category_id = #{categoryId}
+            </if>
+            <if test="state != null and state != ''">
+                AND state = #{state}
+            </if>
+            <if test="createUser != null">
+                AND create_user = #{createUser}
+            </if>
+        </where>
+    </select>
+
+</mapper>

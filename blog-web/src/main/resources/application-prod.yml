@@ -1,0 +1,29 @@
+# application-prod.yml
+spring:
+  datasource:
+    # 启用初始化（always = 总是执行；embedded = 仅内存数据库；never = 不执行）
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    # 配置Druid数据源连接池属性
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      filters: stat,wall,log4j
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  # 启用 Flyway（默认已启用，显式写出更清晰）
+  flyway:
+    enabled: false
+    # 脚本位置（默认就是这个）
+    locations: classpath:db/migration
+    # 如果数据库是全新的，Flyway 会从 V1 开始执行
+    # 如果已有旧表（无 flyway_schema_history 表），可设为 true 来“认领”当前状态
+    baseline-on-migrate: false  # 默认 false，首次使用保持 false

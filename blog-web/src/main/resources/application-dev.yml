@@ -1,0 +1,31 @@
+# 开发环境专属配置
+
+spring:
+  # 数据源 - 本地数据库
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/blog_wurock?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    
+    druid:
+      # 开启监控页面
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: true
+        login-username: admin
+        login-password: admin123
+      # 开发环境可关闭防火墙便于调试
+      wall:
+        config:
+          multi-statement-allow: true
+  
+  # Redis 本地
+  data:
+   redis:
+     host: localhost
+     port: 6379
+  flyway:
+    enabled: false

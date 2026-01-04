@@ -1,0 +1,96 @@
+# springboot中的application.yml
+
+spring:
+  application:
+    name: blog-wr
+  profiles:
+    active: prod
+    
+# 服务器基础配置
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+  tomcat:
+    uri-encoding: utf-8
+  
+# MyBatis 配置
+mybatis:
+  configuration:
+    # 指定 Mapper XML 文件位置
+      mapper-locations: classpath:cn/**/mapper/*.xml
+    # 指定别名映射
+      type-aliases-package: cn.**.entity
+    # 开启驼峰下划线转换
+      map-underscore-to-camel-case: true
+    # 自动映射
+      auto-mapping-behavior: PARTIAL
+    # 开启自动填充功能
+      use-generated-keys: true
+    # 打印 SQL
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 开启缓存
+      cache-enabled: true
+    # 懒加载
+      lazy-loading-enabled: true
+      aggressive-lazy-loading: false
+    # 空值映射为 NULL
+      jdbc-type-for-null: NULL
+    # 默认超时时间
+      default-statement-timeout: 60
+
+# PageHelper 配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+  page-size-zero: true
+
+# 阿里云OSS
+aliyun:
+  oss:
+    endpoint: ${ALIYUN_OSS_ENDPOINT:123}
+    access-key-id: ${ALIYUN_OSS_ACCESS_KEY_ID:123}
+    access-key-secret: ${ALIYUN_OSS_ACCESS_KEY_SECRET:123}
+    bucket-name: ${ALIYUN_OSS_BUCKET_NAME:123}
+    
+# jwt配置
+jwt:
+  # 密钥：建议替换为实际项目中 Base64 编码的随机密钥（示例为模拟密钥，生产环境需重新生成）
+  secret: ${JWT_SECRET:aVeryLongAndRandomSecretKeyThatIsAtLeast32BytesLong}
+  # 访问令牌过期时间：单位秒（示例为 2 小时，可根据需求调整）
+  expiration: 3600
+  # 刷新令牌过期时间：单位秒（示例为 7 天，通常长于访问令牌）
+  refreshExpiration: 604800
+  # 签名算法：默认 HS256，可选 HS384、HS512、RS256 等（非对称加密需额外配置密钥对）
+  algorithm: HS256
+  # 令牌前缀：与请求头中的格式对应，末尾空格需保留（如 "Bearer "）
+  tokenPrefix: "Bearer "
+  # 携带令牌的请求头名称：默认 Authorization，与前端请求头一致
+  header: Authorization
+  
+# 时间格式配置
+  time-format:
+    date-time-pattern: yyyy-MM-dd HH:mm:ss
+    date-pattern: yyyy-MM-dd
+  
+# 日志配置
+logging:
+  # 1. 全局日志级别（默认是 INFO，要打印 debug 必须改为 DEBUG）
+  level:
+#    root: DEBUG  # 全局开启 DEBUG 级别（所有日志都能打印，适合开发环境）
+    # （可选）精细化配置：只给当前包开启 DEBUG，其他包保持 INFO（避免日志刷屏）
+    # 替换为你的 Controller/Service 所在的包名（比如 com.example.demo）
+    cn.wurock.blog.web: DEBUG
+    cn.wurock.blog.auth: DEBUG
+    cn.wurock.blog.config: DEBUG
+    cn.wurock.blog.common: DEBUG
+    cn.wurock.blog.user: DEBUG
+    cn.wurock.blog.article: DEBUG
+  # 2. 控制台输出配置（可选，优化日志格式）
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
