@@ -22,7 +22,6 @@ import java.util.Date;
 public class JwtLogoutHandler implements LogoutHandler {
 	
 	private final JwtService jwtService;
-	private final JwtProperties jwtProperties;
 	private final TokenBlacklistService tokenBlacklistService;
 	
 	/**
@@ -34,13 +33,12 @@ public class JwtLogoutHandler implements LogoutHandler {
 	@Override
 	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 		// 从请求中获取token
-		String bearerToken = jwtService.getTokenFromRequest(request);
-		if (bearerToken == null || !bearerToken.startsWith(jwtProperties.getTokenPrefix())) {
+		String token = jwtService.getTokenFromRequest(request);
+		if (token == null) {
 			log.debug("No valid Bearer token found in request during logout");
 			return;
 		}
 		
-		String token = bearerToken.substring(jwtProperties.getTokenPrefix().length());
 		
 		// 解析token并获取jti
 		Claims claims;
@@ -68,8 +66,8 @@ public class JwtLogoutHandler implements LogoutHandler {
 		long ttlMillis = expiration.getTime() - System.currentTimeMillis();
 		if (ttlMillis > 0) {
 			// 添加到黑名单
-			tokenBlacklistService.blacklist(jti, ttlMillis);
+			tokenBlacklistService.blacklist(jti, ttlMillis/1000);
+			log.debug("Token {} blacklisted successfully", jti);
 		}
-		log.debug("Token {} blacklisted successfully", jti);
 	}
 }

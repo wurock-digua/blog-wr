@@ -130,7 +130,9 @@ public class JwtService {
 		return null;
 	}
 	
-	// 验证并解析（用于认证）
+	/**
+	 * 从令牌中提取用户名
+	 */
 	public String extractUsername(String token) throws SignatureException {
 		Claims claims = parseToken(token); // 会抛异常
 		return claims.getSubject();

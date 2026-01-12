@@ -55,6 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		
 		// 验证 token
 		try {
+			// 从 token 中提取用户名
 			String username = jwtService.extractUsername(token);
 			if (username == null) {
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -74,6 +75,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				}
 				
 				if (jwtService.isTokenValid(token, userDetails)) {
+					// 令牌有效且匹配用户
 					UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
 							userDetails,
 							null,

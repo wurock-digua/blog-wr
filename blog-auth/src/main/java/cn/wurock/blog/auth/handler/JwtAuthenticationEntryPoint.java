@@ -1,4 +1,4 @@
-package cn.wurock.blog.auth.config;
+package cn.wurock.blog.auth.handler;
 
 import cn.wurock.blog.common.constant.ResultCodeConstant;
 import cn.wurock.blog.common.result.Result;

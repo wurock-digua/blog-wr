@@ -4,7 +4,6 @@ import cn.wurock.blog.auth.dto.LoginRequest;
 import cn.wurock.blog.auth.dto.RegisterRequest;
 import cn.wurock.blog.auth.service.AuthService;
 import cn.wurock.blog.common.result.Result;
-import cn.wurock.blog.user.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

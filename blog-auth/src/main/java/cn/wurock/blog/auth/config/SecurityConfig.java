@@ -1,6 +1,7 @@
 package cn.wurock.blog.auth.config;
 
 import cn.wurock.blog.auth.filter.JwtAuthenticationFilter;
+import cn.wurock.blog.auth.handler.JwtAuthenticationEntryPoint;
 import cn.wurock.blog.auth.service.DBUserDetailsSevice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -80,8 +81,9 @@ public class SecurityConfig {
 		
 		// 允许的前端源（注意：必须和你前端实际地址完全一致！）
 		configuration.setAllowedOrigins(Arrays.asList(
-				"http://localhost",
-				"http://120.24.179.231"
+				"http://localhost:5173",
+				"http://localhost:80",
+				"http://120.24.179.231:80"
 		));
 		
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
@@ -127,7 +129,7 @@ public class SecurityConfig {
 						// 公开接口：无需登录即可访问
 						.requestMatchers(WHITE_LIST).permitAll() // 登录/注册/文档/刷新 Token 接口
 						// 管理员接口：仅 ADMIN 角色可访问（配合 @EnableMethodSecurity 也可在方法上控制）
-						.requestMatchers("/api/admin/**").hasRole("ADMIN")
+//						.requestMatchers("/api/admin/**").hasRole("ADMIN")
 						// 所有其他请求：必须认证（登录后）才能访问
 						.anyRequest().authenticated()
 				)
@@ -136,6 +138,7 @@ public class SecurityConfig {
 				.logout(logout -> logout
 						.logoutUrl("/api/auth/logout") // 自定义登出接口
 						.addLogoutHandler(jwtLogoutHandler) // 登出时删除 JWT Token（如黑名单）
+						.permitAll()
 						.logoutSuccessHandler((request, response, authentication) -> {
 							SecurityContextHolder.clearContext(); // 清除安全上下文
 						})
